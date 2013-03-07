@@ -1,23 +1,26 @@
 \documentclass[review]{acmsiggraph}
 
-\TOGonlineid{XXX}
+\TOGonlineid{XXX} %TODO
+
 
 %\title{A Polyfill Approach to Declarative Integration of Interactive 3D Graphics\\ into the World-Wide Web}
 \title{Declarative Integration of Interactive 3D Graphics into the World-Wide Web:\\Principles, Current Approaches, and Research Agenda
 \\~} %some space that we don't get over 4 pages in the final version
+
 \author{Name Lastname\thanks{e-mail:name.lastname@someemail.com}\\Some Research Institution}
 \pdfauthor{Name Lastname}
 
 \keywords{Declarative 3D, HTML5, DOM Integration, Polyfill}
+
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-With the advent of WebGL, plugin-free hardware-accelerated interactive 3D graphics has finally arrived in all major desktop Web browsers.
-WebGL is an imperative solution that is tied to the functionality of rasterization API. Consequently, its usage requires a deeper understanding of the rasterization pipeline. In contrast to this stands a declarative approach with an abstract description of the 3D scene. We strongly believe that such approach is more suitable for the integration of 3D into HTML5 and related technologies such as XML (that could be used for scene construction), DOM (could be used for scene manipulation), and CSS (could be used for styling), concepts known to the millions of existing Web developers and therefore crucial for the fast adoption of 3D on the Web.\\
-As the participants of the \textit{Declarative 3D for the Web Architecture W3C Community Group}, we explore the options for new declarative ways of incorporating 3D graphics directly into HTML to enable its use on any Web page. In this paper we present Declarative 3D principles that guide the work of the group. We describe the current state of the fundamental to our initiative experimental X3DOM and XML3D frameworks. Finally we draw the agenda for the next development stage of the Declarative 3D for the Web.
+With the advent of WebGL, plugin-free hardware-accelerated interactive 3D graphics has finally arrived in all major Web browsers.
+WebGL is an imperative solution that is tied to the functionality of rasterization APIs. Consequently, its usage requires a deeper understanding of the rasterization pipeline. In contrast to this stands a declarative approach with an abstract description of the 3D scene. We strongly believe that such approach is more suitable for the integration of 3D into HTML5 and related Web technologies, as those concepts are well-known by millions of Web developers and therefore crucial for the fast adoption of 3D on the Web.%\\
+Hence, in this paper we explore the options for new declarative ways of incorporating 3D graphics directly into HTML to enable its use on any Web page. We present declarative 3D principles that guide the work of the \textit{Declarative 3D for the Web Architecture W3C Community Group} and describe the current state of the fundamentals to this initiative. Finally, we draw an agenda for the next development stages of Declarative 3D for the Web.
 \end{abstract}
 
 \begin{CRcatlist}
@@ -28,11 +31,12 @@ As the participants of the \textit{Declarative 3D for the Web Architecture W3C C
 \keywordlist
 \copyrightspace
 
+
 \section{Introduction}
 
-The Web evolved from a text-based system to the current rich and interactive medium that supports images, 2D graphics, audio and video. These types of new media have made the Web experience richer, more attractive to users, etc, than ever before, and opened up possibilities for new types of applications and usage. The major media type that is still missing is 3D: synthetic, possibly photorealistic images in 3D with animation, as smoothly integrated in the everyday Web experience as images or video. Just as the appearance of images or video could open new application possibilities, access to the 3D on a Web site would make it possible to include realistic models of 3D objects (from models of buildings to representation of the human body or the sceneries for computer games). As of today, such applications require separate applications or the installation of browser plugins; however the goal would be to achieve the same smooth inclusion of 3D content in a Web page like we experience today with images or SVG based 2D graphics.
+The Web evolved from a text-based system to the current rich and interactive medium that supports images, 2D graphics, audio and video. These types of new media have made the Web experience richer, more attractive to users, etc, than ever before, and opened up possibilities for new types of applications and usage. The major media type that is still missing is 3D: synthetic, possibly photorealistic images in 3D with animation, as smoothly integrated in the everyday Web experience as images or video. Just as the appearance of images or video could open new application possibilities, access to the 3D on a Web site would make it possible to include realistic models of 3D objects -- from models of buildings to representation of the human body or the sceneries for computer games. With WebGL \cite{WebGL12}, a JavaScript binding for OpenGL ES 2.0, this seems feasible; however, the goal would be to achieve the same smooth inclusion of 3D content in a Web page like we experience today with images or SVG-based 2D graphics.
 
-Although some of these goals could also be achieved by imperative means (e.g., through the usage of WebGL \cite{WebGL12}), developments of 3D models have a long tradition of using declarative approaches, which is also in line with some of the fundamental principles of Web development. It is therefore important to explore how the experiences accumulated in two different communities, namely the Web Development and Computer Graphics communities, can be capitalized upon to achieve the long term goal of using 3D on the Web the same way as we do with 2D graphics and video today.
+Although some of these goals could also be achieved by imperative means (e.g., through the usage of WebGL), developments of 3D models have a long tradition of using declarative approaches, which is also in line with some of the fundamental principles of Web development. It is therefore important to explore how the experiences accumulated in two different communities, namely the Web Development and Computer Graphics communities, can be capitalized upon to achieve the long term goal of using 3D on the Web the same way as we do with 2D graphics and video today.
 Moreover, while imperative graphics APIs are powerful and necessary, a \emph{Declarative 3D} approach can provide web authors an easy way to add interactive high-level declarative 3D objects through the HTML Document Object Model (DOM) allowing them to easily create, modify, share, and experience interactive 3D graphics using HTML documents. Figure \ref{fig:DeclarativeVsImperative} depicts the position of the Declarative 3D approach in the current Web graphics technology ecosystem.
 
 \begin{figure}%[ht]
@@ -43,10 +47,10 @@ Moreover, while imperative graphics APIs are powerful and necessary, a \emph{Dec
   %\vspace{-10px}
 \end{figure}
 
-It is arguable that the emerging support for an imperative 3D API for the Web is useful but insufficient for broad acceptance and usage of 3D on the Web. A declarative approach that is tightly integrated with current web technologies and that offers qualified concepts is necessary to support a fast adoption and broad use of interactive 3D graphics by the millions of existing Web developers. The provided concepts must lift the hardware-oriented imperative application programming interfaces (APIs) to an expressive and more easily usable level. Therefore not the low-level data structures of existing hardware layers must be in the center of the design but high-level elements and items like 3D objects, transformations, material descriptions, and lights. Instead of teaching Web developers 3D graphics APIs, the goal is to bring 3D graphics to the point where its natural for Web developers to just make use of it. While this might not be possible for every possible use of a low-level API, we believe that it can cover the vast majority of use cases.
+It is arguable that the emerging support for an imperative 3D API for the Web is useful but insufficient for broad acceptance and usage of 3D on the Web. A declarative approach that is tightly integrated with current web technologies, such as JSON or XML (for scene construction), DOM (for scene manipulation), and CSS (for styling), and that offers qualified concepts is necessary to support a fast adoption and broad use of interactive 3D graphics by the millions of existing Web developers. The provided concepts must lift the hardware-oriented imperative application programming interfaces (APIs) to an expressive and more easily usable level. Therefore not the low-level data structures of existing hardware layers must be in the center of the design but high-level elements and items like 3D objects, transformations, material descriptions, and lights. Instead of teaching Web developers 3D graphics APIs, the goal is to bring 3D graphics to the point where it is natural for Web developers to just make use of it. While this might not be possible for every possible use of a low-level API, we believe that it can cover the vast majority of use cases.
 
-The \textit{Declarative 3D for the Web Architecture W3C Community Group} \cite{Dec3D-CG} was founded to suggest and create methods to add interactive high-level declarative 3D objects to the HTML-DOM \cite{W3C-DOM}, so users can easily create, share and experience interactive 3D graphics. The core mission of this Community Group is to determine the requirements, options, and use cases for the declarative integration of interactive 3D graphics capabilities into the Web technology stack in a declarative way, which hopefully will provide a foundation for future standardization.
-Therefore, this group aims at presenting common use cases that define how 3D might intersect and interact with HTML5, DOM events, CSS, SVG, GeoLocation, Augmented Reality (AR), Efficient XML Interchange (EXI) and other key working groups. Certain complex data types and computations are also of mutual interest.
+The \textit{Declarative 3D for the Web Architecture W3C Community Group} (Dec3D) \cite{Dec3D-CG} was thus founded to suggest and create methods to add high-level declarative 3D objects to the HTML DOM \cite{W3C-DOM}, so users can easily create, share and experience interactive 3D graphics. The core mission of this W3C Community Group is to determine the requirements, options, and use cases for the declarative integration of interactive 3D graphics capabilities into the Web technology stack in a declarative way, which hopefully will provide a foundation for future standardization.
+Therefore, the group aims at presenting common use cases that define how 3D might intersect and interact with HTML5, DOM events, CSS, SVG, GeoLocation, Augmented Reality, Efficient XML Interchange (EXI) and other key working groups, whereas certain complex data types (e.g., transformation matrices) and computations are also of mutual interest. In this regard, this paper presents the current state and efforts concerning Dec3D.
 
 \begin{figure*}%[ht]
   \centering
@@ -56,15 +60,11 @@ Therefore, this group aims at presenting common use cases that define how 3D mig
   %\vspace{-0.2cm}
 \end{figure*}
 
-This paper presents the current state and efforts of the Dec3D CG. In Section \ref{sec:Principles} we describe Declarative 3D principles: a number of key goals that guide the development of the DOM-based interactive 3D graphics within the Community Group.
-In Section \ref{sec:Frameworks} we describe the current state of the fundamental to our initiative experimental systems: Fraunhofer IGD's X3DOM \cite{Behr2009} and DFKI's XML3D \cite{Sons2010} declarative 3D Web publishing frameworks.
-In Section \ref{sec:Agenda} we aim to shape the agenda and identify upcoming research issues for the next development stage of the Declarative 3D for the Web. Finally, in Section \ref{sec:Conclusions} we conclude our work along with directions for future work.
-
 
 \section{Declarative 3D Principles}
 \label{sec:Principles}
 
-The following goals and principles should guide the development:
+In this section we describe Declarative 3D principles, where the following key goals should guide the development of DOM-based interactive 3D graphics.
 
 \paragraph{Following the Established Principles of the Web}
 Declarative 3D is being developed to significantly lower the barrier for authoring 3D content for Web sites. It aims to lower the barrier by duplicating the key features that enabled the growth of the early Web and its further spectacular success.
@@ -113,7 +113,7 @@ Declarative 3D, by living within the structure of Web applications is poised to 
 As we have already mentioned, our Community Group has been formed to determine the requirements, options, and use cases for the declarative integration of interactive 3D graphics capabilities into the Web technology stack which will provide a foundation for future standardization.
 While the standardization is our goal, we still need platforms allowing for the experimentation and for the assessment of our design decisions. We also need to reach out to Web developers who could provide us with valuable feedback as early as possible.
 
-In the following we briefly introduce two experimental open-source frameworks that support the ongoing discussion in the computer graphics and Web communities how an integration of HTML(5) and Declarative 3D content could look like. This discussion is followed by the presentation of the \textit{polyfill} approach for the further X3DOM and XML3D development activities.
+With X3DOM \cite{Behr2009} and XML3D \cite{Sons2010} two experimental declarative 3D Web publishing frameworks are available. In the following we briefly introduce these open-source frameworks, which support the ongoing discussion in the computer graphics and Web communities how an integration of HTML(5) and Declarative 3D content could look like. This discussion is followed by the presentation of the \textit{polyfill} approach for the further X3DOM and XML3D development activities.
 
 
 \subsection{X3DOM and XML3D}
@@ -152,6 +152,8 @@ To sum up, the X3DOM and XML3D experimental declarative 3D Web publishing framew
 
 
 \section{Declarative 3D Agenda}
+
+In this section we aim to shape the agenda and identify upcoming research issues for the next development stage of the Declarative 3D for the Web.
 
 \label{sec:Agenda}
 During the 1st International Workshop on Declarative 3D for the Web Architecture (Dec3D2012) \cite{Dec3D2012} as well as during more informal group meetings at Web3D in 2011, 2012 and SIGGRAPH in 2011, 2012, the members and supporters of the Declarative 3D W3C Community Group agreed that what is needed to make the effort successful and for the W3C to adopt/develop a declarative 3D standard include the following topics.
