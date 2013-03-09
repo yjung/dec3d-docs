@@ -76,14 +76,14 @@ Declarative 3D is being developed to significantly lower the barrier for authori
   \item [Use of the Document Object Model] The DOM \cite{W3C-DOM} is a platform- and language-neutral interface that allows programs and scripts to dynamically access and update the content, structure and style of Web documents. Declarative 3D should use the DOM API to examine and modify elements on the 3D scene and their attributes by simply reading and setting their properties. As the DOM provides access to user actions (e.g., pressing a key or clicking a mouse button), it should also be used as a main interface to interact with 3D contents.
 \end{description}
 
-Moreover, embedded 3D graphics should reuse existing W3C techniques (specifically from HTML5 and SVG) as far as possible and propose extensions only where 3D-specific features are necessary or where they provide significant benefits. Where new concepts are introduced their relation to and effects on existing Web standards should be analyzed, evaluated, and discussed with the respective W3C working groups.
+Embedded 3D graphics should reuse existing W3C techniques, specifically from HTML5 and SVG, as far as possible and propose extensions only where specific features are necessary or provide significant benefits. Where new concepts are introduced their relation to and effects on existing Web standards should be analyzed, evaluated, and discussed with the respective W3C working groups.
 
 \paragraph{3D Content Creation and Reuse}
 While the creation of original 3D geometry and appearances still requires 3D specific know-how, the reuse, configuration, and manipulation of such content should be made similarly easy as for 2D Web content now. The solution should hide internal data structures and algorithms and provide users convenient ways to edit and manipulate such scenes.
 A key success factor for Declarative 3D on the Web will be the ability to generate new or reuse existing content. This requires that suitable exporters and converters can be built. However, as 3D on the Web is supposed mainly as a delivery mechanism, it is not necessary to include the ability to semantically represent all 3D features.
 
 \paragraph{Platform Independence}
-Another aspect is to describe 3D content in a way that does rely neither on a specific render API such as OpenGL or DirectX nor on a specific rendering technique such as rasterization or ray tracing only (cp. \cite{Schwenk12}). The technology investigated should allow for content to be portable across user agents, rendering techniques, and hardware platforms, while taking advantage of available features wherever possible. The results of rendering content under such different environments should be highly predictable.
+3D content needs to be described in a way that does rely neither on a specific render API such as OpenGL or DirectX nor on a specific rendering technique such as rasterization or ray tracing only \cite{Schwenk12}. This should allow for content to be portable across browsers, rendering techniques, and hardware platforms, while taking advantage of available features wherever possible. The results of rendering content under such different environments should be highly predictable.
 
 \paragraph{Efficiency and Scalability}
 Interactive real-time 3D graphics enables new forms of interactivity on the Web but also adds significant new requirements on user agents. A key requirement for the selected technology therefore is the possibility to implement it efficiently (cf. e.g. \cite{Trevett12}).
@@ -117,7 +117,7 @@ As already mentioned, the Dec3D Community Group \cite{Dec3D} has been formed to 
 
 \subsection{X3DOM and XML3D}
 
-With X3DOM \cite{Behr2009} and XML3D \cite{Sons2010} two experimental declarative 3D Web publishing frameworks are available. In the following we briefly introduce these open-source frameworks, which support the ongoing discussion in the computer graphics and Web communities how an integration of HTML(5) and Declarative 3D content could look like. This discussion is followed by the presentation of the so-called ``polyfill'' approach for the further X3DOM and XML3D development activities.
+With X3DOM \cite{Behr2009} and XML3D \cite{Sons2010} two open-source frameworks are available, which are briefly introduced in this section. Both frameworks support the ongoing discussion in the computer graphics and Web communities how an integration of HTML(5) and Declarative 3D content could look like. This discussion is followed by the presentation of the so-called ``polyfill'' approach for further development activities.
 
 Fraunhofer IGD's X3DOM \cite{Behr2009,Behr12} is a JavaScript-based open-source framework for declarative 3D graphics in HTML5 that aims at extending the HTML DOM tree with declarative 3D objects while employing modern Web technologies like CSS3, Ajax, DOM scripting, as well as WebGL and -- as fallback -- Adobe's Flash 11 with Stage 3D \cite{flash} for GPU-accelerated rendering. The proposed 3D elements are mostly based upon the open ISO standard X3D \cite{Web3D-X3D}, though X3DOM introduces a special HTML profile that basically extends the X3D Interchange profile. Additionally, instead of implementing the somehow odd X3D pointing device sensor component, X3DOM simply uses, and appropriately extends, the HTML UI/Mouse events such that 3D pick events are likewise supported.
 
@@ -141,17 +141,16 @@ DFKI's XML3D \cite{Sons2010} is a similar approach. In contrast to X3DOM, this f
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\columnwidth]{images/polyfill.png}
+  \includegraphics[width=0.85\columnwidth]{images/polyfill.png}
   \caption{Levels of integration: current browser APIs only allow integrating with DOM and DOM Events, but not yet fully with CSS.}
   \label{fig:polyInt}
   \vspace{-0.2cm}
 \end{figure}
 
-% TODO: don't cite this link but present the whole idea here!!!
+% Don't cite this link but present the whole idea here!
 % http://www.w3.org/community/declarative3d/wiki/Level_of_Integration/
-Recently, the group proposed to measure a level of integration for 3D graphics in terms of W3C technologies (DOM, CSS. etc.). The proposal aims to explain existing and possible integration levels (Figure \ref{fig:polyInt}) and finally to identify an integration level the group is aiming for.
-% again, this is still bla bla
-% instead, insert text from slides - see slide 22 ff.
+We also propose to measure a level of integration for 3D graphics in terms of W3C technologies (DOM, CSS, etc.) to explain existing and possible integration levels (Figure \ref{fig:polyInt} shows that currently only level 2, DOM integration, is possible), and to finally identify a suitable integration level for declarative 3D. However, the latter imposes several problems in that it requires having a set of 3D-specific CSS properties or even a full shader description via CSS as well as a deeper integration into debugging tools like Chrome Developer Tools or Firebug. However, integration levels 3 and 4 are currently not yet achievable by a JavaScript implementation, because the required APIs are missing: it is not possible to introduce new CSS properties or to extend developer tools by an API.
+
 It quickly became clear that a higher level of integration requires additional APIs in user agents. After discussions with browser vendors (namely Firefox and Chrome), who made it clear that integration of the desired extensions natively into their frameworks is not currently their priority, we decided to consider a polyfill approach for the further development activities.
 Nevertheless, communicating and requesting additional and missing features like custom CSS properties or CSS monitoring is necessary.
 
@@ -163,93 +162,36 @@ To sum up, the X3DOM and XML3D experimental declarative 3D Web publishing framew
 
 \subsection{Declarative 3D Essentials}
 
-TODO % see slides, where these are discussed starting with slide 11/12
+In this section we briefly outline our proposed essential elements for an upcoming Dec3D standard. First of all, a start element allows the transition from the HTML flow layout to 3D transformations:
 
-Dec3D Scene Graph
-Modern and minimalistic scene graph or tree
-traversal and culling
-creates mesh/material/transform bundles for render layer
-picking
-Supports graph and tree structures for data reuse
-API layer, no DOM integration!
+\small
+\begin{verbatim}
+<div>
+    <dec3d style="border: 1px solid black;">
+    ...
+    </dec3d>
+</div>
+\end{verbatim}
+\normalsize
 
-Essential Dec3D DOM Elements
-Focus on minimalistic element set, not usability
-Represents SG concepts as DOM elements
-Adds DOM, Events and CSS to SG
+The DOM integration obviously extends the HTML hierarchy. But this comes along with certain issues like the correct treatment of CSS inheritance. Therefore, CSS integration is another point in that existing CSS properties should be used where applicable. Transformations for instance can be represented using CSS 3D Transforms \cite{webkit3DCSS}. In addition, a set of 3D-specific CSS properties (e.g. for defining the appearance) needs to be defined. However, custom CSS properties are not yet supported by any Web Browser, though finally this seems to change now \cite{CSSCustom}.
 
-Comprehensive Dec3D DOM Elements
-Builds on Essential and/or SG layer
-Focus on usability not minimalism
-Could build on existing SG standards (e.g. X3D) for convenience
+Moreover, not only standard DOM UI Events like `mouseover' and `click' shall be supported, but also events that contain 3D-specific context information.
+In this regard, the Browser API should expose convenience functions and special Dec3D base types consisting of a lean set of complex data types for 2D/3D graphics. Similarly, generic mesh data containers should be based on TypedArrays \cite{TypArr12} with appropriate interfaces to efficiently modify the data, where external binary containers are used as transmission format \cite{Behr12,Trevett12}. Thus, 3D geometry definition will stay close to OpenGL primitives.
 
-1. Start element
-Transition from HTML flow layout to 3D transform
+Besides this, we further distinguish between essential Dec3D DOM Elements, were the focus lies on a minimalistic element set, as well as more comprehensive Dec3D DOM Elements (see middle of Figure \ref{fig:polyArch}), which build on top of those with the focus on usability and which for convenience could build on existing scene-graph standards like X3D \cite{Web3D-X3D}.
 
-2. CSS integration
-Use exiting CSS properties where applicable
-Define a set of 3D-specific CSS properties
-Needs to be supported in UAs!
+Essential DOM elements are a basic set of built-in shaders, which should be enough for most use cases. Advantages are that they do not entail timing attack issues and that they can adapt to any target device. As textures, HTML elements like \verb|<img>|, \verb|<video>|, \verb|<canvas>| shall be used, whereas elements like \verb|<svg>| and \verb|<html>| can serve as interactive textures.
 
-3. Hierarchy
-HTML hierarchy
-Comes with issues (e.g. CSS inheritance)
-
-4. Transformations
-Use CSS 3D Transforms
-
-5. Generic Data Containers
-Take modern HW into account
-Name: Type, TupleSize, Value
-Based on TypedArrays with interface to modify data
-
-6. External Data Containers
-External (binary) blobs / transmission format
-Maps to generic data containers
-
-7. Operators on Data Containers
-Allows dynamic meshes, image processing, compression
-Data driven approach: Xflow, X3D Routes, SVG Filter FX
-
-8. Shaders
-2-3 powerful fixed-function shaders
-Enough for many use-cases
-No timing attack issues
-Can adapt to target device
-
-9. Textures
-Use HTML elements: \verb|<img>|, \verb|<video>|, \verb|<canvas>|
-Interactive textures: \verb|<svg>|, \verb|<html>|
-
-10. 3D Geometry?
-Close to OpenGL primitives
-
-11. Lights
-Shader parameters in GL, but don't obstruct future concepts
-Intuitive way to define lights
-
-12. Viewpoints?
-Link to viewpoints (intra and inter-document)
-
-13. Camera navigation
-Pre-defined navigation modes?
-
-14. DOM Events
-Support standard events: mouseover, click
-3D-specific DOM Events contain 3D-specific context information
-
-15. Interfaces and Types?
-Provide IDLs for new elements
-Convenience functions
-Dec3D Base Types: Lean set of complex data types for 2D/3D
-Provide / use types that help to manage 3D scene, e.g. CSS Matrix
+Lights are basically also shader parameters in OpenGL/WebGL \cite{WebGL12}, but here shall be represented as own elements to provide intuitive ways to define lights and to not obstruct more advanced future concepts.
+Likewise, viewpoints can serve as link to certain points of interest within the document. However, it is still discussable if some pre-defined camera navigation modes should be part of the essential profile.
 
 
 \section{Declarative 3D Agenda}
 \label{sec:Agenda}
 
 In this section we shape the agenda and identify upcoming research issues for the next development stage of Dec3D.
-During the 1\textsuperscript{st} International Workshop on Declarative 3D for the Web Architecture \cite{Dec3D2012} as well as during more informal group meetings at Web3D and SIGGRAPH in 2011/2012, the members and supporters of the Declarative 3D W3C Community Group agreed that what is needed to make the effort successful and for the W3C to adopt/develop a Dec3D standard include the following topics.
+During the 1\textsuperscript{st} Intl. Workshop on Declarative 3D \cite{Dec3D2012} as well as during more informal meetings at Web3D and SIGGRAPH in 2011/2012, the members and supporters of the Declarative 3D W3C Community Group agreed upon the following topics to make the effort successful and for the W3C to adopt/develop a Dec3D standard.
 
 \paragraph{Encourage Participation}
 All relevant stakeholders, e.g. developers, designers, researchers, 3D artists, industry professionals, representatives of standards organizations, accessibility experts, and user-agent implementers, are encouraged to participate in this group. Participants should be willing to actively develop and donate materials towards the group's deliverables, as well as attend the group's teleconferences and face-to-face meetings.
