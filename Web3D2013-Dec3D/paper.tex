@@ -116,10 +116,11 @@ As already mentioned, the Dec3D Community Group \cite{Dec3D} has been formed to 
 
 
 \subsection{X3DOM and XML3D}
-
 With X3DOM \cite{Behr2009} and XML3D \cite{Sons2010} two open-source frameworks are available, which are briefly introduced in this section. Both frameworks support the ongoing discussion in the computer graphics and Web communities how an integration of HTML(5) and Declarative 3D content could look like. This discussion is followed by the presentation of the so-called ``polyfill'' approach for further development activities.
 
 Fraunhofer IGD's X3DOM \cite{Behr2009,Behr12} is a JavaScript-based open-source framework for declarative 3D graphics in HTML5 that aims at extending the HTML DOM tree with declarative 3D objects while employing modern Web technologies like CSS3, Ajax, DOM scripting, as well as WebGL and -- as fallback -- Adobe's Flash 11 with Stage 3D \cite{flash} for GPU-accelerated rendering. The proposed 3D elements are mostly based upon the open ISO standard X3D \cite{Web3D-X3D}, though X3DOM introduces a special HTML profile that basically extends the X3D Interchange profile. Additionally, instead of implementing the somehow odd X3D pointing device sensor component, X3DOM simply uses, and appropriately extends, the HTML UI/Mouse events such that 3D pick events are likewise supported.
+
+\vspace{-1px}
 
 Furthermore, to overcome various problems that come along when embedding 3D mesh data, which typically consists of several megabytes of vertex attribute data, directly into the DOM tree, the developers are working on efficient 3D mesh encodings that allow separating the node structure from the raw vertex data \cite{Behr12}. In this regard, Figures \ref{fig:chApps} and \ref{fig:cadApps} show several X3DOM applications from the cultural heritage and engineering domain, where the ability to efficiently handle big 3D data sets is of high importance.
 Based on this work, 3D transmission formats are now also a major topic at the Khronos Group \cite{Trevett12}, where it is similarly argued that raw 3D data, just like image, video or audio data, needs to be externalized from the HTML document.
@@ -129,38 +130,22 @@ Based on this work, 3D transmission formats are now also a major topic at the Kh
   \includegraphics[width=1.0\linewidth]{images/museum_with_tags2.pdf}
   \caption{A highly dynamic declarative 3D scene with nine animated and skinned characters. The calculation is either performed with classical sequential JavaScript or in parallel exploiting Intel's River Trail proposal for parallel data computations in JavaScript.}
   \label{fig:xflow}
-  \vspace{-0.2cm}
+  \vspace{-0.3cm}
 \end{figure}
 
-XML3D \cite{Sons2010} is a collaboration of DFKI and Intel VCI. Similar to X3DOM, it employs CSS3, DOM scripting, DOM events, and WebGL. In contrast to X3DOM, XML3D is designed as a extension to HTML5 from scratch. It does not define a scene-graph but uses the DOM tree structure for parent child relations and second level references e.g\ via CSS to (re-)use resources such as geometry data, material descriptions or animation data. These resources are not necessarily in the same document, but can also come from external documents in various formats, e.g. as JSON files.
+\vspace{-1px}
+
+XML3D \cite{Sons2010} is a collaboration of DFKI and Intel VCI. Similar to X3DOM, it employs CSS3, DOM scripting, DOM events, and WebGL. In contrast to X3DOM, XML3D is designed as a extension to HTML5 from scratch. It does not define a scene-graph but uses the DOM tree structure for parent child relations and second level references e.g\ via CSS to (re-)use resources such as geometry data, material descriptions or animation data. These resources are not necessarily in the same document, but can also come from external documents in various formats, e.g. as JSON. % files.
+
+\vspace{-1px}
 
 This generic and consistent handling of resources allows fine-granular composition of data sources. It can be combined with Xflow, a declarative data flow component~\cite{KleinSJRSB12} that allows for dynamic meshes, morphing, animation of shader parameters, image processing and AR. The data flow computation can be mapped to hardware, e.g. by composition of WebGL shaders or by exploiting available APIs such as Web Workers~\cite{w3c:webworkers} or River Trail~\cite{Herhut:2012}. Figure~\ref{fig:xflow} shows a XML3D scene with nine characters, skinned and animated with Xflow.
 
 
 % TODO: In the last paragraph of this section, we can write about the efforts to consolidate approaches and/or how the competing two frameworks influence one another for the common benefit...? This should be followed by the some link to the next section (polyfill).
 
-\begin{figure*}
-  \centering
-  \includegraphics[width=1.0\textwidth]{images/cad_apps.png}
-  \caption{From left to right: web-based design review application with annotation markers; interactive explosion of CAD model on iPad; lightweight web-based viewer for 3D CAD data; visualization and interactive exploration of simulation data by using extended mouse events.}
-  \label{fig:cadApps}
-  \vspace{-0.2cm}
-\end{figure*}
-
-
-
-
 
 \subsection{Polyfill Approach}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.85\columnwidth]{images/polyfill.png}
-  \caption{Levels of integration: current browser APIs only allow integrating with DOM and DOM Events, but not yet fully with CSS.}
-  \label{fig:polyInt}
-  \vspace{-0.2cm}
-\end{figure}
-
 % Don't cite this link but present the whole idea here!
 % http://www.w3.org/community/declarative3d/wiki/Level_of_Integration/
 We also propose to measure a level of integration for 3D graphics in terms of W3C technologies (DOM, CSS, etc.) to explain existing and possible integration levels (Figure \ref{fig:polyInt} shows that currently only level 2, DOM integration, is possible), and to finally identify a suitable integration level for declarative 3D. However, the latter imposes several problems in that it requires having a set of 3D-specific CSS properties or even a full shader description via CSS as well as a deeper integration into debugging tools like Chrome Developer Tools or Firebug. However, integration levels 3 and 4 are currently not yet achievable by a JavaScript implementation, because the required APIs are missing: it is not possible to introduce new CSS properties or to extend developer tools by an API.
@@ -172,14 +157,30 @@ A \textit{polyfill} is a downloadable piece of code, which provides facilities t
 
 Polyfill-based approaches allow deriving hard requirements for related and utilized W3C standards and user agent (UA) APIs immediately. This leads to much more evolving concepts and solutions in contrast to an overall declarative 3D specification. In the following we hence list our most important UA requirements.
 
+\begin{figure*}
+  \centering
+  \includegraphics[width=1.0\textwidth]{images/cad_apps.png}
+  \caption{From left to right: web-based design review application with annotation markers; interactive explosion of CAD model on iPad; lightweight web-based viewer for 3D CAD data; visualization and interactive exploration of simulation data by using extended mouse events.}
+  \label{fig:cadApps}
+  \vspace{-0.2cm}
+\end{figure*}
+
 \begin{description}
 \item[DOM] The polyfill layer must be able to access and monitor changes in related DOM elements. This can be achieved using the now deprecated DOM Mutation Events as well as the new \emph{MutationObserver}\footnote{\url{https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html\#mutation-observers}} objects.
 \item[Events] The UA must support registration, firing, and extending UI events. This is mainly done through dynamic property changes in the JavaScript object, which currently represent the event for performance reasons.
 \item[Custom CSS properties] The goal is to support scene management though custom CSS properties. Unfortunately, this was not possible in the last years, but may change with the new CSS Custom Properties specification \cite{CSSCustom}.
 \item[CSS 3D Transforms] The CSS 3D Transforms module \cite{webkit3DCSS} is now supported in all major browsers, but the methods to monitor final matrix changes are limited right now and should be further extended for optimal performance.
 \item[TypedArrays] TypedArrays \cite{TypArr12} were first introduced with the WebGL specification but are now an established method to process large portions of typed data efficiently.
-\item[Generic GPU access] For client-side rendering the polyfill layer has to access the GPU functionality almost directly. Here, WebGL is there a perfect candidate and Flash 11/Stage3D a second fallback option. 
+\item[Generic GPU access] For client-side rendering the polyfill layer has to access the GPU functionality almost directly. Here, WebGL is there a perfect candidate and Flash 11/Stage3D a second fallback option.
 \end{description}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.85\columnwidth]{images/polyfill.png}
+  \caption{Levels of integration: current browser APIs only allow integrating with DOM and DOM Events, but not yet fully with CSS.}
+  \label{fig:polyInt}
+  \vspace{-0.2cm}
+\end{figure}
 
 To sum up, the X3DOM and XML3D experimental declarative 3D Web publishing frameworks are designed to explore different options for adding 3D graphics to HTML. Here, Figure \ref{fig:polyArch} depicts our proposed declarative 3D polyfill runtime architecture, though we'd like to stress that the whole integration model is still evolving and open for discussion.
 
