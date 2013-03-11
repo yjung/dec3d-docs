@@ -124,7 +124,18 @@ Fraunhofer IGD's X3DOM \cite{Behr2009,Behr12} is a JavaScript-based open-source 
 Furthermore, to overcome various problems that come along when embedding 3D mesh data, which typically consists of several megabytes of vertex attribute data, directly into the DOM tree, the developers are working on efficient 3D mesh encodings that allow separating the node structure from the raw vertex data \cite{Behr12}. In this regard, Figures \ref{fig:chApps} and \ref{fig:cadApps} show several X3DOM applications from the cultural heritage and engineering domain, where the ability to efficiently handle big 3D data sets is of high importance.
 Based on this work, 3D transmission formats are now also a major topic at the Khronos Group \cite{Trevett12}, where it is similarly argued that raw 3D data, just like image, video or audio data, needs to be externalized from the HTML document.
 
-DFKI's XML3D \cite{Sons2010} is a similar approach. In contrast to X3DOM, this format proposes a new tag set that is not based on X3D anymore. Furthermore, it does not define a scene-graph but a strict tree structure by means of a prototyping mechanism. In recent versions of XML3D, mesh data can also be externalized from the HTML document by storing it in separate JSON files. Moreover, the developers are working on a system for dynamic data-flow to efficiently support animations \cite{KleinSJRSB12}.
+\begin{figure}
+  \centering
+  \includegraphics[width=1.0\linewidth]{images/museum_with_tags2.pdf}
+  \caption{A highly dynamic declarative 3D scene with nine animated and skinned characters. The calculation is either performed with classical sequential JavaScript or in parallel exploiting Intel's River Trail proposal for parallel data computations in JavaScript.}
+  \label{fig:xflow}
+  \vspace{-0.2cm}
+\end{figure}
+
+XML3D \cite{Sons2010} is a collaboration of DFKI and Intel VCI. Similar to X3DOM, it employs CSS3, DOM scripting, DOM events, and WebGL. In contrast to X3DOM, XML3D is designed as a extension to HTML5 from scratch. It does not define a scene-graph but uses the DOM tree structure for parent child relations and second level references e.g\ via CSS to (re-)use resources such as geometry data, material descriptions or animation data. These resources are not necessarily in the same document, but can also come from external documents in various formats, e.g. as JSON files.
+
+This generic and consistent handling of resources allows fine-granular composition of data sources. It can be combined with Xflow, a declarative data flow component~\cite{KleinSJRSB12} that allows for dynamic meshes, morphing, animation of shader parameters, image processing and AR. The data flow computation can be mapped to hardware, e.g. by composition of WebGL shaders or by exploiting available APIs such as Web Workers~\cite{w3c:webworkers} or River Trail~\cite{Herhut:2012}. Figure~\ref{fig:xflow} shows a XML3D scene with nine characters, skinned and animated with Xflow.
+
 
 % TODO: In the last paragraph of this section, we can write about the efforts to consolidate approaches and/or how the competing two frameworks influence one another for the common benefit...? This should be followed by the some link to the next section (polyfill).
 
@@ -135,6 +146,9 @@ DFKI's XML3D \cite{Sons2010} is a similar approach. In contrast to X3DOM, this f
   \label{fig:cadApps}
   \vspace{-0.2cm}
 \end{figure*}
+
+
+
 
 
 \subsection{Polyfill Approach}
