@@ -156,18 +156,17 @@ Nevertheless, communicating and requesting additional and missing features like 
 
 A \textit{polyfill} is a downloadable piece of code, which provides facilities that are not natively built-in to a Web browser \cite{Sharp2010}. For example, many features of HTML5 are not supported by versions of Internet Explorer older than version 8 or 9, but can be used by web pages if those pages install a so-called polyfill. Polyfills can also be used to add entirely new functionality to browsers.
 
-Polyfill-based approaches allow deriving hard requirements for related and utilized W3C standards and user agent APIs immediately. 
+Polyfill-based approaches allow deriving hard requirements for related and utilized W3C standards and user agent (UA) APIs immediately. This leads to much more evolving concepts and solutions in contrast to an overall declarative 3D specification. In the following we hence list our most important UA requirements.
 
 \begin{description}
-\item[DOM] The Layer must be able to access and monitor changes in related DOM elements. This is currently achieved using the DOM Level 2 MotationEvents but may build on the new MutationObserver 
-\item[Events] The UA must support registration, firing and extending UI-Events. This is mainly done through dynamic property changes in the JavaScript object which represents the Event today
-\item[Custom CSS properties] The goal is to support scene management though custom CSS properties. This was not possible thought the last years but my change with the new CSS Custom Properties specification \cite{CSSCustom}. 
-\item[CSS 3D Transform] CSS 3D Transforms module is now supported in all major browser. The methods to monitor final matrix changes are limited right now and should be extended for optimal performance 
-\item[TypedArrays] TypedArrays where first introduces with the WebGL specification but are now a established method to process large portions of typed data efficiently.    
-\item[Generic GPU access] For client side rendering the Polyfill layer has to access the GPU functionally almost directly. WebGL is there a perfect candidate and Flash/Stag3D a second option. 
+\item[DOM] The polyfill layer must be able to access and monitor changes in related DOM elements. This can be achieved using the now deprecated DOM Mutation Events as well as the new \emph{MutationObserver}\footnote{\url{https://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html\#mutation-observers}} objects.
+\item[Events] The UA must support registration, firing, and extending UI events. This is mainly done through dynamic property changes in the JavaScript object, which currently represent the event for performance reasons.
+\item[Custom CSS properties] The goal is to support scene management though custom CSS properties. Unfortunately, this was not possible in the last years, but may change with the new CSS Custom Properties specification \cite{CSSCustom}.
+\item[CSS 3D Transforms] The CSS 3D Transforms module \cite{webkit3DCSS} is now supported in all major browsers, but the methods to monitor final matrix changes are limited right now and should be further extended for optimal performance.
+\item[TypedArrays] TypedArrays \cite{TypArr12} were first introduced with the WebGL specification but are now an established method to process large portions of typed data efficiently.
+\item[Generic GPU access] For client-side rendering the polyfill layer has to access the GPU functionality almost directly. Here, WebGL is there a perfect candidate and Flash 11/Stage3D a second fallback option. 
 \end{description}
 
-This leads to much more evolving concepts and solutions in contrast to an overall declarative 3D specification.
 To sum up, the X3DOM and XML3D experimental declarative 3D Web publishing frameworks are designed to explore different options for adding 3D graphics to HTML. Here, Figure \ref{fig:polyArch} depicts our proposed declarative 3D polyfill runtime architecture, though we'd like to stress that the whole integration model is still evolving and open for discussion.
 
 
