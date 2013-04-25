@@ -56,7 +56,7 @@ Moreover, while imperative graphics APIs are powerful and necessary, a \emph{Dec
   \includegraphics[width=1.0\columnwidth]{images/Declarative3d.png}
   \caption{The position of the Declarative 3D approach in the current Web graphics technology ecosystem.}
   \label{fig:DeclarativeVsImperative}
-  \vspace{-0.2cm}
+  %\vspace{-0.2cm}
 \end{figure}
 
 It is arguable that the emerging support for an imperative 3D API for the Web is useful but insufficient for broad acceptance and usage of 3D on the Web. A declarative approach that offers qualified concepts and that is tightly integrated with current web technologies, such as JSON or XML for scene construction, DOM for scene manipulation, and CSS for styling, is necessary to support a fast adoption and broad use of interactive 3D graphics by the millions of Web developers. The provided concepts must lift the hardware-oriented imperative application programming interfaces to an expressive and more easily usable level. Therefore not the low-level data structures of existing GPU layers must be in the center of the design but high-level elements and items like 3D objects, transformations, material descriptions, and lights. Instead of teaching Web developers 3D graphics APIs, the goal is to bring 3D graphics to the point where it is natural for Web developers to just make use of it. While this might not be possible for every possible use of a low-level API, it still can cover the vast majority of use cases.
@@ -70,8 +70,9 @@ Therefore, the group aims at presenting common use cases that define how 3D migh
   \includegraphics[width=1.0\textwidth]{images/ch_apps.png}
   \caption{From left to right: walktrough of Roman heritage site; cultural heritage object explorer with metadata; restored virtual synagoge.}
   \label{fig:chApps}
-  \vspace{-0.2cm}
+  %\vspace{-0.2cm}
 \end{figure*}
+
 
 
 \section{Declarative 3D Principles}
@@ -95,7 +96,7 @@ While the creation of original 3D geometry and appearances still requires 3D spe
 A key success factor for Declarative 3D on the Web will be the ability to generate new or reuse existing content. This requires that suitable exporters and converters can be built. However, as 3D on the Web is supposed mainly as a delivery mechanism, it is not necessary to include the ability to semantically represent all 3D features.
 
 \paragraph{Platform Independence}
-3D content needs to be described in a way that does rely neither on a specific render API such as OpenGL or DirectX nor on a specific rendering technique such as rasterization or ray tracing only \cite{Rubinstein:2009,Schwenk12}. This should allow for content to be portable across browsers, rendering techniques, and hardware platforms, while taking advantage of available features wherever possible. The results of rendering content under such different environments should be highly predictable.
+3D content needs to be described in a way that does rely neither on a specific render API such as OpenGL or DirectX nor on a specific rendering technique such as rasterization or ray tracing only \cite{Rubinstein:2009,Schwenk12}. This should allow for content to be portable across web browsers, rendering techniques, and hardware platforms, while taking advantage of available features wherever possible. The results of rendering content under such different environments should be highly predictable.
 
 \paragraph{Efficiency and Scalability}
 Interactive real-time 3D graphics enables new forms of interactivity on the Web but also adds significant new requirements on user agents. A key requirement for the selected technology therefore is the possibility to implement it efficiently (cf. e.g. \cite{Trevett12}).
@@ -124,12 +125,13 @@ As already mentioned, the Dec3D Community Group \cite{Dec3D} has been formed to 
   \includegraphics[width=1.0\linewidth]{images/museum_with_tags2.pdf}
   \caption{A highly dynamic declarative 3D scene with nine animated and skinned characters. The calculation is either performed with classical sequential JavaScript or in parallel exploiting Intel's River Trail proposal for parallel data computations in JavaScript.}
   \label{fig:xflow}
-  \vspace{-0.2cm}
+  %\vspace{-0.2cm}
 \end{figure}
 
 
 \subsection{Evaluation platforms}
 \label{subsection:evaluation}
+
 With X3DOM \cite{Behr2009} and XML3D \cite{Sons2010} two evaluation platforms are available to support the ongoing discussion in the computer graphics and Web communities how an integration of HTML(5) and Declarative 3D content could look like. 
 
 Fraunhofer IGD's X3DOM \cite{Behr2009,Behr12} is a JavaScript-based open-source framework for declarative 3D graphics in HTML5 that aims at extending the HTML DOM tree with declarative 3D objects while employing modern Web technologies like CSS3, Ajax, DOM scripting, as well as WebGL and -- as fallback -- Adobe's Flash 11 with Stage 3D \cite{flash} for GPU-accelerated rendering. The proposed 3D elements are mostly based upon the open ISO standard X3D \cite{Web3D-X3D}, though X3DOM introduces a special HTML profile that basically extends the X3D Interchange profile. Additionally, instead of implementing the somehow odd X3D pointing device sensor component, X3DOM simply uses, and appropriately extends, the HTML UI/Mouse events such that 3D pick events are likewise supported.
@@ -144,12 +146,12 @@ XML3D \cite{Sons2010} is a collaboration of DFKI and Intel VCI. Similar to X3DOM
 
 This generic and consistent handling of resources allows fine-granular composition of data sources. It can be combined with Xflow, a declarative data flow component~\cite{KleinSJRSB12} that allows for dynamic meshes, morphing, animation of shader parameters, image processing and AR. The data flow computation can be mapped to hardware, e.g. by composition of WebGL shaders or by exploiting available APIs such as Web Workers~\cite{w3c:webworkers} or River Trail~\cite{Herhut:2012}. Figure~\ref{fig:xflow} shows a XML3D scene with nine characters, skinned and animated with Xflow.
 
-Both platforms are available under an Open Source license and used in many national and international research projects. From the user feedback and use-cases we were able to collect from the evaluation platforms, we were able to derive the essential features, that both approaches have in common and that we propose for a Dec3D standard.
+Both platforms are available under an Open Source license and used in many national and international research and industrial projects. From the user feedback and use cases we have collected from both evaluation platforms, we were able to derive the essential features, that both approaches have in common and that we propose for a Dec3D standard.
 
 
-% TODO: In the last paragraph of this section, we can write about the efforts to consolidate approaches and/or how the competing two frameworks influence one another for the common benefit...? This should be followed by the some link to the next section (polyfill).
 \subsection{Declarative 3D Essentials}
 \label{subsection:essentials}
+
 In this section we briefly outline our proposed essential elements for an upcoming Dec3D standard. First of all, a start element allows the transition from the HTML flow layout to 3D transformations:
 
 \small
@@ -183,7 +185,7 @@ Likewise, viewpoints can serve as link to certain points of interest within the 
   \includegraphics[width=1.0\columnwidth]{images/Dec3D-Architecture.png}
   \caption{Proposed declarative 3D ``polyfill'' runtime architecture.}
   \label{fig:polyArch}
-  \vspace{-0.2cm}
+  %\vspace{-0.2cm}
 \end{figure}
 
 % Don't cite this link but present the whole idea here!
@@ -200,7 +202,7 @@ A \textit{polyfill} is a downloadable piece of code, which provides facilities t
   \includegraphics[width=0.85\columnwidth]{images/polyfill.png}
   \caption{Levels of integration: current browser APIs only allow integrating with DOM and DOM Events, but not yet fully with CSS.}
   \label{fig:polyInt}
-  \vspace{-0.2cm}
+  %\vspace{-0.2cm}
 \end{figure}
 
 Polyfill-based approaches allow deriving hard requirements for related and utilized W3C standards and user agent (UA) APIs immediately. This leads to much more evolving concepts and solutions in contrast to an overall declarative 3D specification. In the following we hence list our most important UA requirements.
@@ -221,7 +223,7 @@ To sum up, the X3DOM and XML3D experimental declarative 3D Web publishing framew
   \includegraphics[width=1.0\textwidth]{images/cad_apps.png}
   \caption{From left to right: web-based design review application with annotation markers; interactive explosion of CAD model on iPad; lightweight web-based viewer for 3D CAD data; visualization and interactive exploration of simulation data by using extended mouse events.}
   \label{fig:cadApps}
-  \vspace{-0.2cm}
+  %\vspace{-0.2cm}
 \end{figure*}
 
 
