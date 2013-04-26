@@ -152,29 +152,38 @@ Both platforms are available under an Open Source license and used in many natio
 \subsection{Declarative 3D Essentials}
 \label{subsection:essentials}
 
-In this section we briefly outline our proposed essential elements for an upcoming Dec3D standard. First of all, a start element allows the transition from the HTML flow layout to 3D transformations:
+The CG identified 15 key concepts of DOM-based Dec3D. In this section we briefly outline our proposed essential elements for an upcoming standard. 
+
+A \textit{start element}~(1) marks the transition point from HTML box layout to 3D transformations. This element itself is integrated in the flow layout, fully styleable with CSS and behaves similar to e.g. the \verb|<canvas>| element. Within the 3D space we require a \textit{hierarchy}~(2) for 3D objects. HTML offers elements to structure documents hierarchically using elements such as \verb|<div>|, \verb|<span>|, \verb|<section>|, etc. These elements could be reused. On the other hand, HTML5 recently extended the set of structural elements to allow a more granular definition of document semantics. It could be useful to do the same for 3D scenes. Still open is the question, if the reuse of sub-graphs should be supported. This is a common feature in X3D and can also be found in SVG. On the other hand, having multiple paths to one element introduces issues, e.g. with CSS inheritance. 
+
+CSS 3D Transforms~\cite{webkit3DCSS} should be used, to define \textit{transformations}~(3) on the hierarchical structure as well as on other 3D elements. This example illustrates the three later concepts:
 
 \small
 \begin{verbatim}
 <div>
   <dec3d style="border: 1px solid black;">
-    ...
+    <div style="transform: scale3d(2, 2, 2);">
+      ...
+    </div>
   </dec3d>
 </div>
 \end{verbatim}
 \normalsize
 
-The DOM integration obviously extends the HTML hierarchy. But this comes along with certain issues like the correct treatment of CSS inheritance. Therefore, CSS integration is another point in that existing CSS properties should be used where applicable. Transformations for instance can be represented using CSS 3D Transforms \cite{webkit3DCSS}. In addition, a set of 3D-specific CSS properties (e.g. for defining the appearance) needs to be defined. However, custom CSS properties are not yet supported by any Web Browser, though finally this seems to change now \cite{CSSCustom}.
+In general, a tight \textit{CSS integration}~(4) is a major concept: Existing CSS properties should be used where applicable (e.g.\ transform, opacity, color, etc.). In addition, a set of 3D-specific CSS properties (e.g. for defining the appearance) needs to be defined. However, custom CSS properties are not yet supported by any Web Browser, though finally this seems to change now \cite{CSSCustom}.
 
-Moreover, not only standard DOM UI Events like `mouseover' and `click' shall be supported, but also events that contain 3D-specific context information.
-In this regard, the Browser API should expose convenience functions and special Dec3D base types consisting of a lean set of complex data types for 2D/3D graphics. Similarly, generic mesh data containers should be based on TypedArrays \cite{TypArr12} with appropriate interfaces to efficiently modify the data, where external binary containers are used as transmission format \cite{Behr12,Trevett12}. Thus, 3D geometry definition will stay close to OpenGL primitives.
+For realtime interactive 3D graphics systems an \textit{event}~(5) model is essential. The Dec3D standard should leverage the DOM Event model where applicable. Not only standard DOM UI Events such as `mouseover' and `click' shall be supported, but also new events need to be defined to provide 3D-specific context information. In this regard, the Browser API should expose convenience functions and special Dec3D \textit{base types}~(6) consisting of a lean set of complex data types for 2D/3D graphics. In general, we aim a common set of base types usable not only for Dec3D, but also for WebGL API, Audio API, SVG, 3D Transforms etc.
 
-Besides this, we further distinguish between essential Dec3D DOM Elements, were the focus lies on a minimalistic element set, as well as more comprehensive Dec3D DOM Elements (see middle of Figure \ref{fig:polyArch}), which build on top of those with the focus on usability and which for convenience could build on existing scene-graph standards like X3D \cite{Web3D-X3D}.
+Similarly, \textit{generic data containers}~(7) should be based on TypedArrays \cite{TypArr12} with appropriate interfaces for efficient modification of the data. These containers should be general enough to support meshes, animations, shaders, etc. This concept is very close to our efforts regarding \textit{external data containers}~(8) and their efficient transmission~\cite{Behr12,Trevett12}. Given that the generic data containers are close to buffer objects in recent graphics APIs, we aim \textit{3D geometry definitions}~(9) close to OpenGL primitives.
 
-Essential DOM elements are a basic set of built-in shaders, which should be enough for most use cases. Advantages are that they do not entail timing attack issues and that they can adapt to any target device. As textures, HTML elements like \verb|<img>|, \verb|<video>|, \verb|<canvas>| shall be used, whereas elements like \verb|<svg>| and \verb|<html>| can serve as interactive textures.
+Dec3D should support highly dynamic scenes. Using the DOM API to modify the scene data is not sufficient for many use-cases, e.g.\ dynamic meshes, image processing, compression, etc. Thus we need a concept to support efficient data processing that allows to map computations to available hardware. These should be expressed as \textit{operators}~(10) on the data containers above.
 
-Lights are basically also shader parameters in OpenGL/WebGL \cite{WebGL12}, but here shall be represented as own elements to provide intuitive ways to define lights and to not obstruct more advanced future concepts.
-Likewise, viewpoints can serve as link to certain points of interest within the document. However, it is still discussable if some pre-defined camera navigation modes should be part of the essential profile.
+Besides this, we further distinguish between essential Dec3D DOM Elements, were the focus lies on a minimalistic element set, as well as more comprehensive Dec3D DOM Elements (see middle of Figure \ref{fig:polyArch}), which build on top of those with the focus on usability and which for convenience could build on existing scene-graph standards such as X3D ~\cite{Web3D-X3D} or COLLADA~\cite{Arnaud06}.
+
+Essential DOM elements are a basic set of pre-defined \textit{shaders}~(11), which should be enough for most use cases. Advantages are that they do not entail timing attack issues and that they can adapt to any target device. However, the design should not obstruct programmable shaders in the future. HTML elements such as \verb|<img>|, \verb|<video>|, and \verb|<canvas>| can be used as \textit{textures}~(12), whereas elements such as \verb|<svg>| and \verb|<html>| can serve as interactive textures.
+
+\textit{Lights}~(13) are shader parameters in OpenGL/WebGL \cite{WebGL12}. In contrast, for Dec3D we aim a representation to provide a intuitive way to define lights and to not obstruct more advanced future concepts.
+Likewise, \textit{viewpoints}~(14) can serve as link to certain points of interest within the document. However, it is still discussable if some pre-defined \textit{camera navigation}~(15) modes should be part of the essential profile.
 
 
 \subsection{Polyfill Approach}
