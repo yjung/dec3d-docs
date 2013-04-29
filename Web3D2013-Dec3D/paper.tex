@@ -136,11 +136,12 @@ It is also worth mentioning that the Web applications shown in Figures \ref{fig:
 Likewise, when selecting an element in the browser-based CAD and product structure viewer shown in the middle of Figure \ref{fig:cadApps}, the corresponding parts in the tree view are highlighted and vice versa.
 
 
-\emph{XML3D} \cite{Sons2010} is a result of collaboration of DFKI and Intel VCI. Similarly to X3DOM, it employs CSS3, DOM scripting, and DOM events. In contrast to X3DOM, XML3D is designed as a extension to HTML5 from scratch. It does not define a scene-graph, but uses the DOM tree structure for parent child relations and second level references e.g\ via CSS to (re-)use resources such as geometry data, material descriptions or animation data. These resources are not necessarily in the same document, but can also come from external documents in various formats, e.g. as JSON.
+\emph{XML3D} \cite{Sons2010} is a result of collaboration of DFKI and Intel VCI. Similarly to X3DOM, it employs CSS3, DOM scripting, and DOM events. In contrast to X3DOM, XML3D is designed as an extension to HTML5 from scratch. It does not define a scene-graph, but uses the DOM tree structure for parent child relations and second level references e.g.\ via CSS to (re-)use resources such as geometry data, material descriptions or animation data. These resources are not necessarily in the same document, but can also come from external documents in various formats, e.g. as JSON.
 
 This generic and consistent handling of resources allows fine-granular composition of data sources. It can be combined with Xflow, a declarative data flow component~\cite{KleinSJRSB12} that allows for dynamic meshes, morphing, animation of shader parameters, image processing and Augmented Reality. The data flow computation can be mapped to hardware, e.g. by composition of WebGL shaders or by exploiting available APIs such as Web Workers~\cite{w3c:webworkers} or River Trail~\cite{Herhut:2012}. Figure~\ref{fig:xflow} shows a XML3D scene with nine characters, skinned and animated with Xflow.
+There are two implementations of XML3D: the native implementation based on a  modified Chromium browser, and xml3d.js~\cite{sons:2013}, a Polyfill implementation based on WebGL and JavaScript. 
 
-There are two implementations of XML3D: the native implementation based on a  modified Chromium browser, and xml3d.js~\cite{sons:2013}, a Polyfill implementation based on WebGL and JavaScript. Both platforms are available under an Open Source license and used in many national and international research and industrial projects. From the user feedback and use cases we have collected from both evaluation platforms, we were able to derive the essential features, that both approaches have in common and that we propose for a Dec3D standard.
+The X3DOM and XML3D platforms are available under an Open Source license and used in many national and international research and industrial projects. From the user feedback and use cases we have collected from both evaluation platforms, we were able to derive the essential features, that both approaches have in common and that we propose for a Dec3D standard.
 
 \begin{figure}
   \centering
@@ -204,8 +205,8 @@ We also propose a measure for the Level of Integration~(LOI) for 3D graphics int
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\columnwidth]{images/museum.png}
-  \caption{LOI 3 in the native XML3D implementation: Debugging of a 3D scene using the Chrome developer toolbar. Note also that materials are attached to meshes using the 'shader' CSS property.}
+  \includegraphics[width=0.95\columnwidth]{images/museum.png}
+  \caption{LOI 3 in the native XML3D implementation: debugging of a 3D scene using the Chrome developer toolbar. Note also that materials are attached to meshes using the 'shader' CSS property.}
   \label{fig:debugger}
   %\vspace{-0.2cm}
 \end{figure}
@@ -235,7 +236,7 @@ Polyfill-based approaches allow deriving hard requirements for related and utili
 \item[Generic GPU access] For client-side rendering the Polyfill Layer has to access the GPU functionality almost directly. Here, WebGL is there a perfect candidate and Flash 11/Stage3D a second fallback option.
 \end{description}
 
-To sum up, the X3DOM and XML3D experimental declarative 3D Web publishing frameworks are designed to explore different options for adding 3D graphics to HTML. Here, Figure \ref{fig:polyArch} depicts our proposed Declarative 3D Polyfill Runtime Architecture, though we'd like to stress that the whole integration model is still evolving and open for discussion.
+To sum up, the X3DOM and XML3D experimental declarative 3D Web publishing frameworks are designed to explore different options for adding 3D graphics to HTML. Here, Figure \ref{fig:polyArch} depicts our proposed Declarative 3D Polyfill Runtime Architecture, though we would like to stress that the whole integration model is still evolving and open for discussion.
 
 \begin{figure*}
   \centering
@@ -244,7 +245,6 @@ To sum up, the X3DOM and XML3D experimental declarative 3D Web publishing framew
   \label{fig:cadApps}
   %\vspace{-0.2cm}
 \end{figure*}
-
 
 
 
