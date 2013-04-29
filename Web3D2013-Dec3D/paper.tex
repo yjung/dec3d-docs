@@ -132,7 +132,7 @@ Fraunhofer IGD's \emph{X3DOM} \cite{Behr2009,Behr12} is a JavaScript-based open-
 Furthermore, to overcome various problems that come along when embedding 3D mesh data, which typically consists of several megabytes of vertex attribute data, directly into the DOM tree, efficient 3D mesh encodings are being developed that allow separating the node structure from the raw vertex data \cite{Behr12}. In this regard, Figures \ref{fig:chApps} and \ref{fig:cadApps} show several X3DOM applications from the cultural heritage and engineering domain, where the ability to efficiently handle big 3D data sets is of high importance.
 Based on this work, 3D transmission formats are now also a major topic at the Khronos Group \cite{Trevett12}, where it is similarly argued that raw 3D data, just like image, video or audio data, needs to be externalized from the HTML document.
 
-It is also worth mentioning that the Web applications shown in Figures \ref{fig:chApps} and \ref{fig:cadApps} were not realized by graphics programmers but mainly by Web developers, using standard DOM scripting as well as JavaScript frameworks like jQuery \cite{jquery}. For example, to switch to a certain viewpoint when the user clicks onto the arrow button in the walkthrough application shown in Figure \ref{fig:chApps} (left), the application developer simply needs to update the 'bind' attribute of the "viewpoint" tag by calling its \emph{setAttribute} method.
+It is also worth mentioning that the Web applications shown in Figures \ref{fig:chApps} and \ref{fig:cadApps} were not realized by graphics programmers, but mainly by Web developers using standard DOM scripting as well as JavaScript frameworks like jQuery \cite{jquery}. For example, to switch to a certain viewpoint when the user clicks onto the arrow button in the walkthrough application shown in Figure \ref{fig:chApps} (left), the application developer simply needs to update the 'bind' attribute of the "viewpoint" tag by calling its \emph{setAttribute} method.
 Likewise, when selecting an element in the browser-based CAD and product structure viewer shown in the middle of Figure \ref{fig:cadApps}, the corresponding parts in the tree view are highlighted and vice versa.
 
 
@@ -158,7 +158,7 @@ The community group identified 15 key concepts of DOM-based Dec3D. In this secti
 
 A \textit{start element}~(1) marks the transition point from HTML box layout to 3D transformations. This element itself is integrated in the flow layout, fully styleable with CSS and behaves similar to e.g. the \verb|<canvas>| element. Within the 3D space we require a \textit{hierarchy}~(2) for 3D objects. HTML offers elements to structure documents hierarchically using elements such as \verb|<div>|, \verb|<span>|, \verb|<section>|, etc. These elements could be reused. On the other hand, HTML5 recently extended the set of structural elements to allow a more granular definition of document semantics. It could be useful to do the same for 3D scenes. Still open is the question, if the reuse of sub-graphs should be supported. This is a common feature in X3D and can also be found in SVG. On the other hand, having multiple paths to one element introduces issues, e.g. with CSS inheritance. 
 
-CSS 3D Transforms~\cite{webkit3DCSS} should be used, to define \textit{transformations}~(3) on the hierarchical structure as well as on other 3D elements. This example illustrates the three later concepts:
+CSS 3D Transforms~\cite{webkit3DCSS} should be used to define \textit{transformations}~(3) on the hierarchical structure as well as on other 3D elements. This example illustrates the three following concepts:
 
 \small
 \begin{verbatim}
@@ -172,13 +172,13 @@ CSS 3D Transforms~\cite{webkit3DCSS} should be used, to define \textit{transform
 \end{verbatim}
 \normalsize
 
-In general, a tight \textit{CSS integration}~(4) is a major concept: existing CSS properties should be used where applicable (e.g., transform, opacity, color, etc.). In addition, a set of 3D-specific CSS properties (e.g. for defining the appearance) needs to be defined. However, custom CSS properties are not yet supported by any Web Browser, though finally this seems to change now \cite{CSSCustom}.
+In general, a tight \textit{CSS integration}~(4) is a major concept: existing CSS properties should be used where applicable (e.g., transform, opacity, color, etc.). In addition, a set of 3D-specific CSS properties (e.g. for defining the appearance) needs to be defined. However, custom CSS properties are not yet supported by any Web browser, though finally this seems to change now \cite{CSSCustom}.
 
 For real-time interactive 3D graphics systems an \textit{event}~(5) model is essential. The Dec3D standard should leverage the DOM Event model where applicable. Not only standard DOM UI Events such as `mouseover' and `click' (with appropriate extensions for 3D scenes as already discussed in \cite{BehrJDA11}) shall be supported, but also new events need to be defined to provide 3D-specific context information. In this regard, the Browser API should expose convenience functions and special Dec3D \textit{base types}~(6) consisting of a lean set of complex data types for 2D/3D graphics. In general, we aim a common set of base types usable not only for Dec3D, but also for WebGL API, Audio API, SVG, 3D Transforms etc.
 
 Similarly, \textit{generic data containers}~(7) should be based on TypedArrays \cite{TypArr12} with appropriate interfaces for efficient modification of the data. These containers should be general enough to support meshes, animations, shaders, etc. This concept is very close to our efforts regarding \textit{external data containers}~(8) and their efficient transmission~\cite{Behr12,Trevett12}. Given that the generic data containers are close to vertex buffer objects in recent graphics APIs, we aim \textit{3D geometry definitions}~(9) close to OpenGL primitives.
 
-Dec3D should support highly dynamic scenes. Using the DOM API to modify the scene data is not sufficient for many use cases, e.g.\ dynamic meshes, image processing, compression, etc. Thus we need a concept to support efficient data processing that allows to map computations to available hardware. These should be expressed as \textit{operators}~(10) on the data containers above.
+Dec3D should support highly dynamic scenes. Using the DOM API to modify the scene data is not sufficient for many use cases, e.g.\ dynamic meshes, image processing, compression, etc. Thus, we need a concept to support efficient data processing that allows to map computations to available hardware. These should be expressed as \textit{operators}~(10) on the data containers above.
 
 \begin{figure}
   \centering
@@ -193,14 +193,14 @@ Besides this, we further distinguish between essential Dec3D DOM Elements, where
 Essential DOM elements include a basic set of pre-defined \textit{shaders}~(11), which should be enough for typical use cases. Advantages are that they do not entail timing attack issues and that they can adapt to any target device. However, the design should not obstruct programmable shaders in the future. HTML elements such as \verb|<img>|, \verb|<video>|, and \verb|<canvas>| can be used as \textit{textures}~(12), whereas elements such as \verb|<svg>| and \verb|<html>| could serve as interactive textures -- once the corresponding security issues are resolved.
 
 \textit{Lights}~(13) are shader parameters in OpenGL/ WebGL \cite{WebGL12}. In contrast, for Dec3D we aim a representation to provide a intuitive way to define lights (and thereby also shadows) and to not obstruct more advanced future concepts.
-Likewise, \textit{viewpoints}~(14) can serve as link to certain points of interest within the document. However, it is still discussable if some pre-defined \textit{camera navigation}~(15) modes -- to get directly started without having to modify the camera matrix with a special script -- should be part of the essential profile.
+Likewise, \textit{viewpoints}~(14) can serve as links to certain points of interest within the document. However, it is still discussable if some pre-defined \textit{camera navigation}~(15) modes -- to get directly started without having to modify the camera matrix with a special script -- should be part of the essential profile.
 
 
 \subsection{Level of Integration and Polyfill Approach}
 \label{subsection:polyfill}
 
 % http://www.w3.org/community/declarative3d/wiki/Level_of_Integration/
-We also propose a measure for the Level of Integration~(LOI) for 3D graphics into the W3C technology stack (DOM, CSS, etc.) to explain existing and possible integration levels~(Figure \ref{fig:polyInt}). Level 0 is the classical integration using plug-ins. Many X3D implementations as well as Adobe's Flash and Unity 3D use the plug-in model to integrate their rendering engine into the browser. LOI 1 provides a dedicated element in the DOM in combination with an API. Currently  WebGL and the \verb|<canvas>| provide this level of integration. The next level (LOI 2) has the scene description not in JavaScript but integrated in the DOM. Levels 3 and 4 provide an even better integration with CSS and easy debugging of 3D scenes. This requires having a set of 3D-specific CSS properties or even a full shader description via CSS as well as a deeper integration into debugging tools like Chrome Developer Tools or Firebug.
+We also propose a measure for the Level of Integration~(LOI) for 3D graphics into the W3C technology stack (DOM, CSS, etc.) to explain existing and possible integration levels~(Figure \ref{fig:polyInt}). Level 0 is the classical integration using plug-ins. Many X3D implementations as well as Adobe's Flash and Unity 3D use the plug-in model to integrate their rendering engine into the browser. LOI 1 provides a dedicated element in the DOM in combination with an API. Currently  WebGL and the \verb|<canvas>| provide this level of integration. The next level (LOI 2) has the scene description not in JavaScript but integrated in the DOM. Levels 3 and 4 provide an even better integration with CSS and easy debugging of 3D scenes. This requires having a set of 3D-specific CSS properties or even a full shader description via CSS as well as a deeper integration into debugging tools like Chrome Developer Tools or Firebug (for an example see Figure \ref{fig:debugger} and \cite{SonsSlusallekDec3D2012}).
 
 \begin{figure}
   \centering
@@ -256,13 +256,16 @@ During the 1\textsuperscript{st} Intl. Workshop on Declarative 3D \cite{Dec3D201
 
 \paragraph{Encourage Participation}
 All relevant stakeholders, e.g. developers, designers, researchers, 3D artists, industry professionals, representatives of standards organizations, accessibility experts, and user-agent implementers, are encouraged to participate in this group. Participants should be willing to actively develop and donate materials towards the group's deliverables, as well as attend the group's teleconferences and face-to-face meetings.
+\vspace{-0.1cm}
 
 \paragraph{Clear Definition of Use Cases and Requirements}
 The group needs to agree on a collection of relevant use cases, where embedding 3D data in HTML using a declarative approach provides significant benefit. Here, declarative approaches esp. seem relevant for the industry, since they tend to think in formats (such as STL, STEP/IGES or CATIA) not in APIs.
 Each use case should explore how publishers and consumers benefit from Dec3D. From these use cases, the group needs to derive and prioritize the different required dimensions for the Dec3D technical specification \cite{JankowskiDec3D2012,LeFeuvreDec3D2012}.
+\vspace{-0.1cm}
 
 \paragraph{Clear Technical Specification}
 The next step is the creation of the clear, detailed and extensible technical specification of the implementation concepts and features necessary to cover a majority of useful requirements. Measurable properties need to be defined to quantitatively and/or qualitatively evaluate the achieved solution, document the pros and cons of each, and demonstrate that, based on the above analysis, there is a good chance of success in creating a W3C standard for Declarative 3D for the Web.
+\vspace{-0.1cm}
 
 \paragraph{Outreach and Exemplar Applications}
 The group needs to further continue its outreach activities through the high quality demonstrations of the Declarative 3D philosophy using the open-source frameworks X3DOM and XML3D. Therefore, several applications have to be identified, each requiring and demonstrating different capabilities of Dec3D. For example, one application could require huge 3D datasets, which are impractical for inclusion directly into the DOM; another could require real-time control of an external system; another could integrate with a complex data base; another an illustration of complex data (information visualization) without a physical analog, and yet another a more traditional scientific visualization. Key to selection of these applications is the use and demonstration of a more declarative 3D requirement.
@@ -282,7 +285,7 @@ We are absolutely aware that our goal is ambitious and it will take some time to
 
 
 \section*{Acknowledgements}
-The research presented in this paper has been supported by the EU projects V-Must (\url{http://v-must.net}), VERVE (\url{http://www.verveconsortium.eu}) and FI-CONTENT, the BMBF project EMERGENT, the Intel Visual Computing Institute, the SFI's Lion2 and EI's Copernicus projects, and the Villes Transparentes project.
+The research presented in this paper has been supported by the EU projects V-Must (\url{http://v-must.net}), VERVE (\url{http://www.verveconsortium.eu}) and FI-CONTENT, the BMBF project EMERGENT, the Intel Visual Computing Institute, the SFI's Lion2 and EI's Copernicus (\url{http://copernicus.deri.ie}) projects, and the Villes Transparentes project.
 
 \bibliographystyle{acmsiggraph}
 %\parskip3pt
